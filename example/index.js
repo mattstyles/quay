@@ -7,7 +7,10 @@ console.log( 'Quay attached to window', quay )
 
 let s = quay.stream( 'S' )
 s.on( 'data', event => {
-    console.log( 's down', event )
+    //console.log( 's down', event )
+    if ( quay.pressed.has( '<shift>' ) ) {
+        console.log( 'shift + s' )
+    }
 })
 
 quay.on( 'W', event => {

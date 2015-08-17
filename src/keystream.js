@@ -9,7 +9,6 @@ export default class KeyStream extends EventEmitter {
     constructor() {
         super()
 
-        // Tracks the timestamp when key is first pressed
         /**
          * Start of this keypress
          * @type <TimeStamp>
@@ -55,12 +54,7 @@ export default class KeyStream extends EventEmitter {
             /**
              * Measures the duration of this keypress
              */
-            delta: this.delta,
-
-            /**
-             * Pass through raw keydown event
-             */
-            raw: event.raw
+            delta: this.delta
         })
     }
 
