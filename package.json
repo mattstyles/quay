@@ -1,6 +1,6 @@
 {
   "name": "quay",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Small keydown handler for accurately assessing keypresses",
   "main": "build.js",
   "scripts": {
