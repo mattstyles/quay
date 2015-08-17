@@ -1,5 +1,6 @@
 
 import EventEmitter from 'eventemitter3'
+import vkey from 'vkey'
 import Map from 'core-js/es6/map'
 
 
@@ -10,17 +11,29 @@ export default class Quay extends EventEmitter {
         this.el = el
         this.pressed = new Map()
 
+        this.el.addEventListener( 'focus', this.attach )
+        this.el.addEventListener( 'blur', this.detach )
+    }
+
+    attach = () => {
+        console.log( 'attaching' )
         this.el.addEventListener( 'keydown', this.onKeydown )
         this.el.addEventListener( 'keyup', this.onKeyup )
     }
 
-    onKeydown = ( event ) => {
-        let key = event.keyCode
+    detach = () => {
+        console.log( 'detaching' )
+        this.el.removeEventListener( 'keydown', this.onKeydown )
+        this.el.removeEventListener( 'keyup', this.onKeyup )
 
-        // This should also be impossible and as the keyup should remove it
+        this.pressed.clear()
+    }
+
+    onKeydown = ( event ) => {
+        let key = vkey[ event.keyCode ]
+
+        // Bail on repeated keypresses
         if ( this.pressed.has( key ) ) {
-            console.log( 'already pressed' )
-            console.log( this.pressed.get( key ) )
             return
         }
 
@@ -29,7 +42,7 @@ export default class Quay extends EventEmitter {
     }
 
     onKeyup = ( event ) => {
-        let key = event.keyCode
+        let key = vkey[ event.keyCode ]
 
         console.log( 'keyup', key )
 
