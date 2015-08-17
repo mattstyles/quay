@@ -1,6 +1,6 @@
 {
   "name": "quay",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Clientside module for turning keypresses into event streams",
   "main": "lib",
   "scripts": {
