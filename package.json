@@ -1,0 +1,27 @@
+{
+  "name": "quay",
+  "version": "0.0.0",
+  "description": "Small keydown handler for accurately assessing keypresses",
+  "main": "build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepack": "npm run build",
+    "prebuild": "rm -rf build.js",
+    "build": "babel input.js > build.js"
+  },
+  "keywords": [
+    "keys",
+    "keyboard",
+    "keypress",
+    "keydown",
+    "keyup"
+  ],
+  "author": "Matt Styles",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^5.8.21"
+  },
+  "dependencies": {
+    "eventemitter3": "^1.1.1"
+  }
+}
