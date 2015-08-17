@@ -15,13 +15,15 @@ export default class Quay {
      */
     constructor( el = window ) {
         this.el = el
-        this.raf = raf( this.el, this.onTick )
+        this.raf = raf( this.el, this._onTick )
         this.raf.pause()
         this.pressed = new Map()
         this.keys = new Map()
 
         this.el.addEventListener( 'focus', this._attach )
         this.el.addEventListener( 'blur', this._detach )
+
+        this._attach()
     }
 
     /**
@@ -60,7 +62,7 @@ export default class Quay {
         this.pressed.set( key, event )
 
         // Emit events while keys are pressed
-        this.raf._resume()
+        this._resume()
     }
 
     /**
@@ -134,10 +136,11 @@ export default class Quay {
     /**
      * @public
      * @param key <String> vkey key identifier
+     * @param cb <Function> _optional_
      * @returns <EventEmitter> event stream
      * Adds an event stream listener. Stream emits events when the key is pressed
      */
-    stream( key ) {
+    stream( key, cb = null ) {
         // If key stream already exist then bail
         if ( this.keys.has( key ) ) {
             // @TODO consider multiple streams to one key, but its probably best
@@ -146,6 +149,11 @@ export default class Quay {
         }
 
         let emitter = new EventEmitter()
+
+        if ( cb ) {
+            emitter.on( 'data', cb )
+        }
+
         this.keys.set( key, emitter )
         return emitter
     }
@@ -161,7 +169,43 @@ export default class Quay {
         }
 
         // @TODO mem leak? delete EventEmitter?
+        delete this.keys.get( key )
         this.keys.delete( key )
+    }
+
+    /**
+     * @public
+     * @param key <String> vkey key identifier
+     * @param cb <Function>
+     * @returns <EventEmitter> event stream
+     * Alias for `this.stream`
+     */
+    on( key, cb ) {
+        return this.stream( key, cb )
+    }
+
+    /**
+     * @public
+     * @param key <String> vkey key id
+     * @returns <Boolean>
+     * Alias for removeStream
+     */
+    off( key ) {
+        this.removeStream( key )
+    }
+
+    /**
+     * @public
+     * @param key <String> vkey key identifier
+     * @param cb <Function>
+     * @returns <EventEmitter> event stream
+     * Fires just one event on first keypress
+     */
+    once( key, cb ) {
+        return this.stream( key, event => {
+            cb( event )
+            this.off( key )
+        })
     }
 
 }
