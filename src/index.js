@@ -191,6 +191,8 @@ export default class Quay {
             return false
         }
 
+        this.keys.get( key ).destroy()
+
         delete this.keys.get( key )
         this.keys.delete( key )
 

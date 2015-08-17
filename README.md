@@ -156,3 +156,7 @@ Raw keyup for the associated key stream
 ### `data`
 
 Fired whilst the key is pressed and returns the data event object
+
+### `destroy`
+
+Fired when the stream is removed

@@ -33,6 +33,16 @@ export default class KeyStream extends EventEmitter {
     }
 
     /**
+     * Emits destroy event
+     */
+    destroy() {
+        this.off( 'keydown', this.onKeydown )
+        this.off( 'keyup', this.onKeyup )
+
+        this.emit( 'destroy' )
+    }
+
+    /**
      * Emits an event
      * Santizes the raw key event
      */
