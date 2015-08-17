@@ -1,6 +1,7 @@
 
 import EventEmitter from 'eventemitter3'
 import vkey from 'vkey'
+import raf from 'raf-stream'
 import Map from 'core-js/es6/map'
 
 
@@ -9,7 +10,10 @@ export default class Quay extends EventEmitter {
         super()
 
         this.el = el
+        this.raf = raf( this.el, this.onTick )
+        this.raf.pause()
         this.pressed = new Map()
+        this.keys = new Map()
 
         this.el.addEventListener( 'focus', this.attach )
         this.el.addEventListener( 'blur', this.detach )
@@ -39,6 +43,9 @@ export default class Quay extends EventEmitter {
 
         this.pressed.set( key, 'some data' )
         console.log( 'added event', key )
+
+        // Start emitting events
+        this.fire()
     }
 
     onKeyup = ( event ) => {
@@ -53,6 +60,47 @@ export default class Quay extends EventEmitter {
         }
 
         this.pressed.delete( key )
+
+        if ( this.pressed.size <= 0 ) {
+            this.cancel()
+        }
     }
 
+    addKeyStream( key ) {
+        // If key stream already exist then bail
+        if ( this.keys.has( key ) ) {
+            // @TODO consider multiple streams to one key, but its probably best
+            // this is handled by the caller and not the lib
+            return false
+        }
+
+        let emitter = new EventEmitter()
+        this.keys.set( key, emitter )
+        return emitter
+    }
+
+    fire() {
+        if ( this.firing ) {
+            return
+        }
+
+        console.log( 'fire tick' )
+        this.firing = true
+
+        this.raf.resume()
+    }
+
+    cancel() {
+        if ( !this.firing ) {
+            return
+        }
+
+        console.log( 'cancel tick' )
+        this.firing = false
+        this.raf.pause()
+    }
+
+    onTick = ( delta ) => {
+        console.log( 'ticking', delta )
+    }
 }

@@ -28,6 +28,7 @@
   "dependencies": {
     "core-js": "^1.0.1",
     "eventemitter3": "^1.1.1",
+    "raf-stream": "^3.0.0",
     "vkey": "^1.0.0"
   }
 }
