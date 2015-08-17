@@ -191,9 +191,10 @@ export default class Quay {
             return false
         }
 
-        // @TODO mem leak? delete EventEmitter?
         delete this.keys.get( key )
         this.keys.delete( key )
+
+        return true
     }
 
     /**
@@ -214,7 +215,7 @@ export default class Quay {
      * Alias for removeStream
      */
     off( key ) {
-        this.removeStream( key )
+        return this.removeStream( key )
     }
 
     /**
