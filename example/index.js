@@ -6,10 +6,15 @@ let quay = new Quay( window )
 console.log( 'Quay attached to window', quay )
 
 let s = quay.stream( 'S' )
+s.on( 'keydown', event => {
+    console.log( '-->', 's' )
+})
+s.on( 'keyup', event => {
+    console.log( '<--', 's' )
+})
 s.on( 'data', event => {
-    //console.log( 's down', event )
     if ( quay.pressed.has( '<shift>' ) ) {
-        console.log( 'shift + s' )
+        console.log( '   ', 'shift + s' )
     }
 })
 
@@ -25,3 +30,4 @@ quay.once( 'Q', event => {
 })
 
 window.quay = quay
+window.Quay = Quay
