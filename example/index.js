@@ -1,5 +1,5 @@
 
-import Quay from '../build'
+import Quay from '../lib'
 
 let quay = new Quay( window )
 
@@ -20,3 +20,5 @@ quay.once( 'Q', event => {
     console.log( 'q', event )
     console.log( 'just once' )
 })
+
+window.quay = quay

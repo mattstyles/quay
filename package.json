@@ -2,12 +2,12 @@
   "name": "quay",
   "version": "0.1.0",
   "description": "Clientside module for turning keypresses into event streams",
-  "main": "build.js",
+  "main": "lib",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepack": "npm run build",
-    "prebuild": "rm -rf build.js",
-    "build": "babel index.js > build.js",
+    "prebuild": "rm -rf lib && mkdir lib",
+    "build": "babel src --out-dir lib",
     "preexample": "npm run build",
     "example": "browserify -d -t babelify example/index.js > example/bundle.js"
   },

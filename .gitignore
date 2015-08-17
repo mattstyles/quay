@@ -1,4 +1,4 @@
 node_modules
 *.log
-build.js
+lib
 example/bundle.js
