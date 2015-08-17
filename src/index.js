@@ -1,8 +1,8 @@
 
-import EventEmitter from 'eventemitter3'
 import vkey from 'vkey'
 import raf from 'raf-stream'
 import Map from 'core-js/es6/map'
+import KeyStream from './keystream'
 
 /**
  * @class
@@ -58,8 +58,12 @@ export default class Quay {
             return
         }
 
-        // @TODO add some specific meta for the keypresses
         this.pressed.set( key, event )
+
+        let stream = this.keys.get( key )
+        if ( stream ) {
+            stream.emit( 'keydown', event )
+        }
 
         // Emit events while keys are pressed
         this._resume()
@@ -76,6 +80,11 @@ export default class Quay {
         if ( !this.pressed.has( key ) ) {
             // @TODO error handle here as this should be impossible
             return
+        }
+
+        let stream = this.keys.get( key )
+        if ( stream ) {
+            stream.emit( 'keyup', event )
         }
 
         this.pressed.delete( key )
@@ -120,7 +129,10 @@ export default class Quay {
             if ( !stream ) {
                 return
             }
-            stream.emit( 'data', {
+
+            // Custom emitter, sanitizes keypress
+            stream.fire({
+                raw: val,
                 delta: delta
             })
         }, this )
@@ -148,7 +160,7 @@ export default class Quay {
             return false
         }
 
-        let emitter = new EventEmitter()
+        let emitter = new KeyStream()
 
         if ( cb ) {
             emitter.on( 'data', cb )
