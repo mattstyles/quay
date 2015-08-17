@@ -7,5 +7,5 @@ console.log( 'Quay attached to window', quay )
 
 let s = quay.addKeyStream( 'S' )
 s.on( 'data', event => {
-    console.log( 's down' )
+    console.log( 's down', event )
 })

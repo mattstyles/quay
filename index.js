@@ -20,13 +20,13 @@ export default class Quay extends EventEmitter {
     }
 
     attach = () => {
-        console.log( 'attaching' )
+        console.log( 'attaching Quay' )
         this.el.addEventListener( 'keydown', this.onKeydown )
         this.el.addEventListener( 'keyup', this.onKeyup )
     }
 
     detach = () => {
-        console.log( 'detaching' )
+        console.log( 'detaching Quay' )
         this.el.removeEventListener( 'keydown', this.onKeydown )
         this.el.removeEventListener( 'keyup', this.onKeyup )
 
@@ -41,11 +41,12 @@ export default class Quay extends EventEmitter {
             return
         }
 
+        // @TODO add some meaningful meta for the keypresses
         this.pressed.set( key, 'some data' )
-        console.log( 'added event', key )
+        console.log( 'keydown', key )
 
         // Start emitting events
-        this.fire()
+        this.raf.resume()
     }
 
     onKeyup = ( event ) => {
@@ -61,8 +62,9 @@ export default class Quay extends EventEmitter {
 
         this.pressed.delete( key )
 
+        // With no keypresses stop spamming the tick
         if ( this.pressed.size <= 0 ) {
-            this.cancel()
+            this.raf.pause()
         }
     }
 
@@ -79,28 +81,31 @@ export default class Quay extends EventEmitter {
         return emitter
     }
 
-    fire() {
-        if ( this.firing ) {
+    resume() {
+        if ( !this.raf.paused ) {
             return
         }
-
-        console.log( 'fire tick' )
-        this.firing = true
 
         this.raf.resume()
     }
 
-    cancel() {
-        if ( !this.firing ) {
+    pause() {
+        if ( this.raf.paused ) {
             return
         }
 
-        console.log( 'cancel tick' )
-        this.firing = false
         this.raf.pause()
     }
 
     onTick = ( delta ) => {
-        console.log( 'ticking', delta )
+        this.pressed.forEach( ( val, key ) => {
+            let stream = this.keys.get( key )
+            if ( !stream ) {
+                return
+            }
+            stream.emit( 'data', {
+                delta: delta
+            })
+        }, this )
     }
 }
