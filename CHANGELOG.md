@@ -1,4 +1,6 @@
 
+* _update_ babel6
+
 # 0.2.0
 
 * _add_ docs
