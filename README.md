@@ -22,6 +22,31 @@ quay.on( '<up>', event => {
 })
 ```
 
+### Appending listeners to streams
+
+A stream can be created which will return an emitter, from there you can apply or remove callbacks to the emitter
+
+```js
+function onUp( event ) {
+  console.log( 'up', event )
+}
+
+quay.stream( '<up>' )
+  .on( 'data', onUp )
+```
+
+`.stream` also accepts a callback that manually binds to the `data` event. The stream also emits other events, see the api docs.
+
+### Removing an individual listener
+
+`.removeStream` or `.off` removes the stream from `quay`, meaning that it destroys the emitter and any listeners associated with that listener. To remove a single listener grab the emitter and use `.off` or `.removeListener`.
+
+```js
+quay.keys.get( '<up>' )
+  .off( 'data', onUp )
+```
+
+
 ## API
 
 ### `.stream`

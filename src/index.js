@@ -182,6 +182,7 @@ export default class Quay {
   }
 
   /**
+   * Removes all streams from the key
    * @public
    * @param key <String> vkey key id
    * @returns <Boolean>
