@@ -88,3 +88,5 @@ export default class KeyStream extends EventEmitter {
     this.lastDown = event.timeStamp
   }
 }
+
+module.exports = KeyStream

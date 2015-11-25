@@ -234,3 +234,5 @@ export default class Quay {
     })
   }
 }
+
+module.exports = Quay
