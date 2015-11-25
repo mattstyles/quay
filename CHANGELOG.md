@@ -1,5 +1,7 @@
+# 0.3.0
 
 * _update_ babel6
+* _fix_ remove all listeners from a stream to allow for GC
 
 # 0.2.0
 

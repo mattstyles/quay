@@ -4,6 +4,9 @@
 
 Client side module for turning key presses into event streams synced with the animation frame. Uses [vkey](https://github.com/chrisdickinson/vkey/blob/master/index.js) definitions.
 
+[![Dependency Status](https://david-dm.org/mattstyles/quay.svg)](https://david-dm.org/mattstyles/quay.svg)
+[![npm version](https://badge.fury.io/js/quay.svg)](https://badge.fury.io/js/quay)
+
 ## Installation
 
 ```
