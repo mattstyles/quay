@@ -104,7 +104,10 @@ export default class Quay {
 
     // Register any key helper
     this.anyKey.emit( 'keyup', event )
-    keydown = null
+    if ( !pressed.size ) {
+      keydown = null
+    }
+
 
     let stream = this.keys.get( key )
     if ( stream ) {
