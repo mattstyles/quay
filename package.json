@@ -9,7 +9,15 @@
     "prebuild": "rm -rf lib && mkdir lib",
     "build": "babel src --out-dir lib",
     "preexample": "npm run build",
-    "example": "browserify -d -t babelify example/index.js > example/bundle.js"
+    "example": "browserify -d example/index.js > example/bundle.js"
+  },
+  "browserify": {
+    "transform": "babelify"
+  },
+  "babel": {
+    "presets": [
+      "urban"
+    ]
   },
   "keywords": [
     "keys",
