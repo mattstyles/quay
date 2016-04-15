@@ -7,6 +7,9 @@ import KeyStream from './keystream'
 // Static member
 var pressed = new Map()
 
+// Static global keypress
+var keydown = null
+
 /**
  * @class
  * Quay emits stream events on keydown events
@@ -21,6 +24,8 @@ export default class Quay {
     this.raf = raf( this.el, this._onTick )
     this.raf.pause()
     this.keys = new Map()
+
+    this.anyKey = new KeyStream()
 
     this.el.addEventListener( 'focus', this._attach )
     this.el.addEventListener( 'blur', this._detach )
@@ -69,6 +74,10 @@ export default class Quay {
       return
     }
 
+    // Register any key helper
+    this.anyKey.emit( 'keydown', event )
+    keydown = event
+
     pressed.set( key, event )
 
     let stream = this.keys.get( key )
@@ -92,6 +101,10 @@ export default class Quay {
       // @TODO error handle here as this should be impossible
       return
     }
+
+    // Register any key helper
+    this.anyKey.emit( 'keyup', event )
+    keydown = null
 
     let stream = this.keys.get( key )
     if ( stream ) {
@@ -135,6 +148,11 @@ export default class Quay {
    * Iterates through active keys and emits key events
    */
   _onTick = ( delta ) => {
+    this.anyKey.fire({
+      raw: keydown,
+      delta: delta
+    })
+
     pressed.forEach( ( val, key ) => {
       let stream = this.keys.get( key )
       if ( !stream ) {
@@ -171,6 +189,14 @@ export default class Quay {
       return false
     }
 
+    // Special any-keys emitter
+    if ( key === '*' ) {
+      if ( cb ) {
+        this.anyKey.on( 'data', cb )
+      }
+      return this.anyKey
+    }
+
     let emitter = new KeyStream()
 
     if ( cb ) {
@@ -190,6 +216,11 @@ export default class Quay {
   removeStream( key ) {
     if ( !this.keys.has( key ) ) {
       return false
+    }
+
+    // Any-key helper
+    if ( key === '*' ) {
+      this.anyKey.destroy()
     }
 
     this.keys.get( key ).destroy()
