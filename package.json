@@ -1,6 +1,6 @@
 {
   "name": "quay",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Turns keypresses into event streams, requires DOM",
   "main": "lib",
   "scripts": {

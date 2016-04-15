@@ -1,3 +1,10 @@
+
+# 0.4.0
+
+* _add_ development watch script
+* _update_ dependencies
+* _add_ key emitter for any key press
+
 # 0.3.0
 
 * _update_ babel6
