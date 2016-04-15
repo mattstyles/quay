@@ -8,6 +8,7 @@
     "prepack": "npm run build",
     "prebuild": "rm -rf lib && mkdir lib",
     "build": "babel src --out-dir lib",
+    "watch": "babel --watch src --out-dir lib",
     "preexample": "npm run build",
     "example": "browserify -d example/index.js > example/bundle.js"
   },
