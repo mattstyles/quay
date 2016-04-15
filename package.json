@@ -1,6 +1,6 @@
 {
   "name": "quay",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Turns keypresses into event streams, requires DOM",
   "main": "lib",
   "scripts": {
@@ -10,7 +10,8 @@
     "build": "babel src --out-dir lib",
     "watch": "babel --watch src --out-dir lib",
     "preexample": "npm run build",
-    "example": "browserify -d example/index.js > example/bundle.js"
+    "example": "browserify -d example/index.js > example/bundle.js",
+    "prepublish": "npm run build"
   },
   "browserify": {
     "transform": "babelify"
