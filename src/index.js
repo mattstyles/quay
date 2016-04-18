@@ -4,11 +4,6 @@ import raf from 'raf-stream'
 import Map from 'core-js/es6/map'
 import KeyStream from './keystream'
 
-// Static member
-var pressed = new Map()
-
-// Static global keypress
-var keydown = null
 
 /**
  * @class
@@ -25,6 +20,9 @@ export default class Quay {
     this.raf.pause()
     this.keys = new Map()
 
+    this.pressed = new Map()
+    this.keydown = null
+
     this.anyKey = new KeyStream()
 
     this.el.addEventListener( 'focus', this._attach )
@@ -38,9 +36,9 @@ export default class Quay {
    * Allow access to the static class member, no need to privatise it as its
    * handy for consumers to implement key combos
    */
-  get pressed() {
-    return pressed
-  }
+  // get pressed() {
+  //   return this.pressed
+  // }
 
   /**
    * @private
@@ -59,7 +57,7 @@ export default class Quay {
     this.el.removeEventListener( 'keydown', this._onKeydown )
     this.el.removeEventListener( 'keyup', this._onKeyup )
 
-    pressed.clear()
+    this.pressed.clear()
   }
 
   /**
@@ -70,15 +68,15 @@ export default class Quay {
     let key = vkey[ event.keyCode ]
 
     // Bail on repeated keypresses
-    if ( pressed.has( key ) ) {
+    if ( this.pressed.has( key ) ) {
       return
     }
 
     // Register any key helper
     this.anyKey.emit( 'keydown', event )
-    keydown = event
+    this.keydown = event
 
-    pressed.set( key, event )
+    this.pressed.set( key, event )
 
     let stream = this.keys.get( key )
     if ( stream ) {
@@ -97,15 +95,15 @@ export default class Quay {
     let key = vkey[ event.keyCode ]
 
     // In theory, this should never occur
-    if ( !pressed.has( key ) ) {
+    if ( !this.pressed.has( key ) ) {
       // @TODO error handle here as this should be impossible
       return
     }
 
     // Register any key helper
     this.anyKey.emit( 'keyup', event )
-    if ( !pressed.size ) {
-      keydown = null
+    if ( !this.pressed.size ) {
+      this.keydown = null
     }
 
 
@@ -114,10 +112,10 @@ export default class Quay {
       stream.emit( 'keyup', event )
     }
 
-    pressed.delete( key )
+    this.pressed.delete( key )
 
     // With no keypresses stop spamming the tick
-    if ( pressed.size <= 0 ) {
+    if ( this.pressed.size <= 0 ) {
       this._pause()
     }
   }
@@ -152,11 +150,11 @@ export default class Quay {
    */
   _onTick = ( delta ) => {
     this.anyKey.fire({
-      raw: keydown,
+      raw: this.keydown,
       delta: delta
     })
 
-    pressed.forEach( ( val, key ) => {
+    this.pressed.forEach( ( val, key ) => {
       let stream = this.keys.get( key )
       if ( !stream ) {
         return

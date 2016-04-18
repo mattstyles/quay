@@ -9,9 +9,9 @@
     "prebuild": "rm -rf lib && mkdir lib",
     "build": "babel src --out-dir lib",
     "watch": "babel --watch src --out-dir lib",
-    "preexample": "npm run build",
-    "example": "browserify -d example/index.js > example/bundle.js",
-    "prepublish": "npm run build"
+    "prestart": "npm run build",
+    "prepublish": "npm run build",
+    "start": "budo example --live"
   },
   "browserify": {
     "transform": "babelify"
@@ -37,7 +37,8 @@
     "babel-cli": "^6.5.1",
     "babel-preset-urban": "^0.5.0",
     "babelify": "^7.2.0",
-    "browserify": "^13.0.0"
+    "browserify": "^13.0.0",
+    "budo": "^8.2.1"
   },
   "dependencies": {
     "core-js": "^2.2.2",
