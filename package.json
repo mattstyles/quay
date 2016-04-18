@@ -11,7 +11,7 @@
     "watch": "babel --watch src --out-dir lib",
     "prestart": "npm run build",
     "prepublish": "npm run build",
-    "start": "budo example --live"
+    "start": "budo example/multiple --live"
   },
   "browserify": {
     "transform": "babelify"
