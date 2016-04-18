@@ -1,4 +1,8 @@
 
+# 0.5.0
+
+* _add_ support multiple Quay instances
+
 # 0.4.2
 
 * _fix_ key stream for any key press should only end when all keys are up
