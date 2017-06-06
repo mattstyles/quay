@@ -243,6 +243,10 @@ export default class Quay {
     return this.stream( key, cb )
   }
 
+  addEventListener( key, cb ) {
+    return this.on( key, cb )
+  }
+
   /**
    * @public
    * @param key <String> vkey key id
@@ -251,6 +255,10 @@ export default class Quay {
    */
   off( key ) {
     return this.removeStream( key )
+  }
+
+  removeEventListener( key ) {
+    return this.off( key )
   }
 
   /**

@@ -1,4 +1,8 @@
 
+# 0.6.0
+
+* _add_ addEventListener/removeEventListener for better interop
+
 # 0.5.0
 
 * _add_ support multiple Quay instances
